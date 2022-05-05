@@ -3,6 +3,7 @@
 require_once "Utils/functions.php"; //Pour avoir la fonction e()
 require_once "Models/Model.php"; //Inclusion du modèle
 require_once "Controllers/Controller.php"; //Inclusion de la classe Controller
+require('vendor/autoload.php');
 
 $controllers = ["home"]; //Liste des contrôleurs -- A RENSEIGNER
 $controller_default = "home"; //Nom du contrôleur par défaut-- A RENSEIGNER
