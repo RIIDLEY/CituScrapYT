@@ -84,10 +84,19 @@ class Controller_home extends Controller{
       }
 
       fclose($fp);
-      /*header("Content-type: application/octet-stream");
-      header("Content-disposition: attachment;filename=$fp");*/
-    }
+      //$this->render('home',['filename'=>$fp]);
+      header('Content-Description: File Transfer');
+      header('Content-Type: application/octet-stream');
+      header('Content-Disposition: attachment; filename="'.basename('file.csv').'"');
+      header('Expires: 0');
+      header('Cache-Control: must-revalidate');
+      header('Pragma: public');
+      header('Content-Length: ' . filesize('file.csv'));
+      readfile('file.csv');
+    }else{
       $this->render('home');
+    }
+
 
   }
   
