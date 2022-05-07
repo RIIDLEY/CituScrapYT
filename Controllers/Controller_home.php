@@ -43,6 +43,7 @@ class Controller_home extends Controller{
   public function action_recherche_mot_cle(){
     //echo "<script>alert(\"coucou\")</script>";
     if(isset($_POST['name']) and !preg_match("#^\s*$#",$_POST['name'])) {
+      try {
       $client = new Google_Client();
       $client->setDeveloperKey('AIzaSyBA_E1glTlK44wkkvxRYaWa-5y40OuLD2U');
       $client->setScopes([
@@ -53,9 +54,9 @@ class Controller_home extends Controller{
       $response = $youtube->search->listSearch('id,snippet', ['q'=>$_POST['name'], 'order'=>'relevance', 'maxResults'=>100, 'type'=>'video']);
 
       $toCSV = array (
-          array('Titre', 'Lien', 'Description'),
+          array('Titre', 'Lien', 'Description','Tags'),
       );
-
+        $fp = fopen('file.csv', 'w');
       foreach($response["items"] as $videoList){
 
         $tmp = array();
@@ -66,18 +67,25 @@ class Controller_home extends Controller{
 
         foreach ($DataVideo['items'] as $detail){
           array_push($tmp, str_replace("\n",' ',remove_emoji($detail['snippet']['description'])));
-
+          if (!empty($detail['snippet']['tags'])){
+            array_push($tmp,implode(" ",$detail['snippet']['tags']));
+          }
         }
         array_push($toCSV, $tmp);
-        $fp = fopen('file.csv', 'w');
+
 
         foreach ($toCSV as $fields) {
           fputcsv($fp, $fields);
         }
-        fclose($fp);
+
+      }
+      }catch (Google_Service_Exception $e){
+
       }
 
-
+      fclose($fp);
+      /*header("Content-type: application/octet-stream");
+      header("Content-disposition: attachment;filename=$fp");*/
     }
       $this->render('home');
 
