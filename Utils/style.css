@@ -1,0 +1,13 @@
+.grandediv{
+}
+
+.circle {
+    width: 250px;
+    height: 250px;
+    line-height: 250px;
+    border-radius: 50%;
+    font-size: 50px;
+    color: gray;
+    text-align: center;
+    background: orange
+}
