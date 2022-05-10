@@ -44,14 +44,54 @@ function remove_emoji($string)//fonction qui supprime les emojis d'une chaine de
     return $clear_string;
 }
 
-function getTitre($videoData){
-    return $videoData['snippet']['title'];
+function getTitre($listSearchResp){
+    return $listSearchResp['snippet']['title'];
 }
 
-function getLien($videoData){
-    return "https://www.youtube.com/watch?v=". $videoData['id']['videoId'];
+function getLien($listSearchResp){
+    return "https://www.youtube.com/watch?v=". $listSearchResp['id']['videoId'];
 }
 
-function getDescription($videoData){
-    return "https://www.youtube.com/watch?v=". $videoData['id']['videoId'];}
+function getDescription($listVideos){
+    foreach ($listVideos['items'] as $detail){
+        if (!empty($detail['snippet']['tags'])){
+            return str_replace("\n",' ',remove_emoji($detail['snippet']['description']));
+        }
+        else{
+            return "";
+        }
+    }
+}
 
+function getTags($listVideos){
+    foreach ($listVideos['items'] as $detail){
+        if (!empty($detail['snippet']['tags'])){
+            return implode(" ",$detail['snippet']['tags']);
+        }else{
+            return "";
+        }
+    }
+}
+
+function getDateUpload($listSearchResp){
+    return date('Y-m-d', strtotime($listSearchResp['snippet']['publishedAt']));
+}
+
+function getNameChannel($channelID,$youtube){
+    $response = $youtube->channels->listChannels('snippet', ['id'=>$channelID]);
+    foreach ($response["items"] as $namechannel){
+        return $namechannel['snippet']['title'];
+    }
+}
+
+function getNbLike($listVideosResp){
+    foreach ($listVideosResp['items'] as $detail){
+        return $detail['statistics']['likeCount'];
+    }
+}
+
+function getNbViews($listVideosResp){
+    foreach ($listVideosResp['items'] as $detail){
+        return $detail['statistics']['viewCount'];
+    }
+}
