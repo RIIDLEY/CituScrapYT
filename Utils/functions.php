@@ -95,3 +95,63 @@ function getNbViews($listVideosResp){
         return $detail['statistics']['viewCount'];
     }
 }
+
+
+function getComm($idVideo,$nbdata,$ordre,$youtube){
+
+    include 'Utils/data.php';
+    $toCSV = array(
+        $comCSV
+    );
+    $token = "";
+    $i=0;
+
+    do{
+
+        $queryParams = [
+            'videoId' => $idVideo,
+            'textFormat' => 'plainText',
+            'maxResults' => 100,
+            'order'=>$ordre
+        ];
+
+        if(!empty($token)){
+            $arr2 = array('pageToken' => $token);
+            $queryParams = $queryParams + $arr2;
+        }
+
+        $videoCommentThreads = $youtube->commentThreads->listCommentThreads('snippet,replies', $queryParams);
+
+        $token = $videoCommentThreads->getNextPageToken();
+
+        foreach($videoCommentThreads["items"] as $comm){
+            $tmp = array();
+            array_push($tmp,$comm['snippet']['topLevelComment']['id']);//id
+            array_push($tmp,$comm['snippet']['totalReplyCount']);//nbrep
+            array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['likeCount']);//NbLike
+            array_push($tmp,date('Y-m-d', strtotime($comm['snippet']['topLevelComment']['snippet']['publishedAt'])));//date
+            array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['authorDisplayName']);//Auteur
+            array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['textOriginal']);//Texte
+            array_push($toCSV, $tmp);
+
+           if(!empty($comm['replies']['comments'])){
+                for ($j = 0; $j<count($comm['replies']['comments']);$j++){
+                    $tmpReplies = array();
+                    array_push($tmpReplies,$comm['replies']['comments'][$j]['id']);//id
+                    array_push($tmpReplies,"");//nbrep
+                    array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['likeCount']);//NbLike
+                    array_push($tmpReplies,date('Y-m-d', strtotime($comm['replies']['comments'][$j]['snippet']['publishedAt'])));//date
+                    array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['authorDisplayName']);//Auteur
+                    array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['textOriginal']);//Texte
+                    array_push($tmpReplies,$comm['snippet']['topLevelComment']['id']);//repond a
+
+                    array_push($toCSV, $tmpReplies);
+                }
+            }
+
+        }
+        $i++;
+    }while($i<$nbdata/100);
+
+    return $toCSV;
+}
