@@ -11,18 +11,13 @@ class Controller_metadata extends Controller{
   {
     if (isset($_POST['name']) and !preg_match("#^\s*$#", $_POST['name']) and isset($_POST['listemetadata']) and isset($_POST['nbdata'])) {
       try {
-
-        $client = new Google_Client();
-        $client = new Google_Client();
-        $client->setScopes([
-            'https://www.googleapis.com/auth/youtube.force-ssl',
-        ]);
-
-        $youtube = new Google_Service_Youtube($client);
-        $client->setAccessToken($_SESSION['token']);
-
         include 'Utils/data.php';
-        $filename = 'file.csv';
+        include 'Utils/credentials.php';
+        $client = new Google_Client();
+        $client->setDeveloperKey($keyAPI);
+        $youtube = new Google_Service_Youtube($client);
+
+        $filename = 'CSV/MetaData_'.str_replace(" ","_",$_POST['name']).'.csv';
         $toCSV = array(
             $_POST['listemetadata']
         );
@@ -53,7 +48,6 @@ class Controller_metadata extends Controller{
                 break;
               case "Tags":
                 array_push($tmp, getTags($listVideosResp));
-                print("\n");
                 break;
               case "Date":
                 array_push($tmp, getDateUpload($listSearchResp));
@@ -73,10 +67,11 @@ class Controller_metadata extends Controller{
         }
         }
 
-
       } catch (Google_Service_Exception $e) {
-        echo "<script>alert('Une erreur est survenu:$e')</script>";
+        echo "<script>alert('Une erreur est survenu')</script>";
       } catch (GuzzleHttp_Exception_RequestException $e) {
+        echo "<script>alert(\"Une erreur de co est survenu\")</script>";
+      } catch (GuzzleHttp_Exception_ConnectException $e) {
         echo "<script>alert(\"Une erreur de co est survenu\")</script>";
       }
 

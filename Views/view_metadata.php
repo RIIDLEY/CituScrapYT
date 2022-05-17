@@ -1,16 +1,27 @@
 <?php
 require('view_begin.php');
 
-if (isset($_SESSION['token'])){
 ?>
-    <a href="?controller=home&action=home" style="text-decoration: none;">Back</a>
-    <div class="container">
+<script>
+    var element = document.getElementById("meta");
+    element.classList.add("active");
+
+
+    function loading() {
+        var element = document.getElementById("myDiv");
+        element.classList.add("loader");
+    }
+</script>
+
+    <div class="grandeDivData">
     <h1>Collecteur de metadonées</h1>
     <form class="form-inline" action = "?controller=metadata&action=recherche_mot_cle" method="post">
         <input type="text" name="name" size="50" placeholder="Mot clés"/>
-        <input type="submit" value="Chercher" class="btn btn-primary mb-2"/>
-        <br>
-        <label>Metadata : </label> <br>
+
+        <div class="option">
+
+        <div class="divTypeMeta">
+        <u><h4>Metadata :</h4></u>
         <?php
         include 'Utils/data.php';
         foreach ($metadata as $value) {
@@ -19,8 +30,11 @@ if (isset($_SESSION['token'])){
         }
 
         ?>
+        </div>
 
-        <label>Trié par : </label> <br>
+
+        <div class="divSort">
+        <u><h4>Trié par :</h4></u>
         <?php
         foreach ($order as $value) {
             if ($value=="relevance"){
@@ -33,10 +47,12 @@ if (isset($_SESSION['token'])){
         }
 
         ?>
+        </div>
 
-        <label>Nb Data par : </label> <br>
+         <div class="divNbData">
+         <u><h4>Nombre de données :</h4></u>
         <select name="nbdata">
-            <option value="">--Please choose an option--</option>
+            <option value="">-</option>
 
             <?php
 
@@ -45,15 +61,20 @@ if (isset($_SESSION['token'])){
             }
 
             ?>
-
+        </select>
+         </div>
+            <br>
+        </div>
+        <input type="submit" value="Chercher" class="btn btn-primary mb-2"/>
         </form>
     </div>
-    <?php
 
-}else{
-    ?>
-    <h2>acces interdit</h2>
+<button class="btn btn-primary" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span class="sr-only">Loading...</span>
+</button>
+
 <?php
-}
+
 require('view_end.php');
 ?>

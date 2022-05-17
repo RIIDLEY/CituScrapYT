@@ -7,7 +7,7 @@ require_once "Controllers/Controller.php"; //Inclusion de la classe Controller
 require('vendor/autoload.php');
 
 $controllers = ["home","metadata","com","captions"]; //Liste des contrôleurs -- A RENSEIGNER
-$controller_default = "home"; //Nom du contrôleur par défaut-- A RENSEIGNER
+$controller_default = "metadata"; //Nom du contrôleur par défaut-- A RENSEIGNER
 
 //On teste si le paramètre controller existe et correspond à un contrôleur de la liste $controllers
 if (isset($_GET['controller']) and in_array($_GET['controller'], $controllers)) {

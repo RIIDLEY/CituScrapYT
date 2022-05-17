@@ -20,14 +20,13 @@ class Controller_com extends Controller
           $this->render("com");
         }
 
-        $key = 'AIzaSyBA_E1glTlK44wkkvxRYaWa-5y40OuLD2U';
-
+        include 'Utils/credentials.php';
         $client = new Google_Client();
-        $client->setDeveloperKey($key);
+        $client->setDeveloperKey($keyAPI);
 
         $youtube = new Google_Service_Youtube($client);
 
-        $filename = 'fileComm.csv';
+        $filename = 'CSV/fileComm.csv';
 
         if (file_exists($filename)) {
           unlink($filename);

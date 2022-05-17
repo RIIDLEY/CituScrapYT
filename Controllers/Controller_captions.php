@@ -16,11 +16,9 @@ class Controller_captions extends Controller{
            echo "<script>alert(\"Id incorrect.\")</script>";
            $this->render("captions");
          }
-
-         $key = 'AIzaSyBA_E1glTlK44wkkvxRYaWa-5y40OuLD2U';
-
+         include 'Utils/credentials.php';
          $client = new Google_Client();
-         $client->setDeveloperKey($key);
+         $client->setDeveloperKey($keyAPI);
 
          $youtube = new Google_Service_Youtube($client);
           $tmp = array();
@@ -34,8 +32,10 @@ class Controller_captions extends Controller{
          $this->render('captions',["tablang"=>$tmp,"idVideo"=>$_POST['name']]);
        } catch (Google_Service_Exception $e) {
          echo "<script>alert('Une erreur est survenu:$e')</script>";
+         $this->render("captions");
        } catch (GuzzleHttp_Exception_RequestException $e) {
-         echo "<script>alert(\"Une erreur de co est survenu\")</script>";
+         echo "<script>alert(\"Une erreur de connexion est survenu\")</script>";
+         $this->render("captions");
        }
 
      }
@@ -43,22 +43,21 @@ class Controller_captions extends Controller{
   }
 
   public function action_download(){
-    if (isset($_GET['lang']) and isset($_GET['IdVideo']))
+    if (isset($_GET['lang']) and isset($_GET['IdVideo'])){
+      $tmp = 'node Captions.js ' . $_GET['IdVideo'] ." ". $_GET['lang'];
+      $command = escapeshellcmd($tmp);
+      $output = shell_exec($command);
 
-    $tmp = 'node Captions.js ' . $_GET['IdVideo'] ." ". $_GET['lang'];
-    $command = escapeshellcmd($tmp);
-    $output = shell_exec($command);
-
-    if (trim($output)=="Done"){
-      header("Content-disposition: attachment;filename=captions.csv");
-      header('Content-Length: ' . filesize("captions.csv"));
-      readfile("captions.csv");
-    }else{
-      echo "<script>alert(\"Une erreure est survenu.\")</script>";
+      if (trim($output)=="Done"){
+        $filename = 'CSV/fileCaptions_'.$_GET['IdVideo'].'.csv';
+        header("Content-disposition: attachment;filename=$filename");
+        header('Content-Length: ' . filesize($filename));
+        readfile($filename);
+      }else{
+        echo "<script>alert(\"Une erreure est survenu.\")</script>";
+        $this->render("captions");
+      }
     }
-
-
-    //$this->render("captions");
 
   }
 

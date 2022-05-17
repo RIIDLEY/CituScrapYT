@@ -1,8 +1,11 @@
 <?php
 require('view_begin.php');
-
 ?>
-<a href="?controller=home&action=home" style="text-decoration: none;">Back</a>
+<script>
+    var element = document.getElementById("cap");
+    element.classList.add("active");
+</script>
+
 <div class="container">
     <h1>Collecteur de sous-titre</h1>
     <form class="form-inline" action = "?controller=captions&action=captions" method="post">

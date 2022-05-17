@@ -1,18 +1,15 @@
 var getSubtitles = require('youtube-captions-scraper').getSubtitles;
-const fs = require("fs");
-
 const ObjectsToCsv = require('objects-to-csv');
 var arguments = process.argv;
 
-if (fs.existsSync("captions.csv")) {
-    fs.unlinkSync("captions.csv");
-}
+var idvideo = arguments[2];
 
 getSubtitles({
     videoID: arguments[2], // youtube video id
     lang: arguments[3] // default: `en`
 }).then(function(captions) {
     const csv = new ObjectsToCsv(captions);
-    csv.toDisk('captions.csv');
+    var filename = 'CSV/fileCaptions_' + idvideo + '.csv';
+    csv.toDisk(filename);
     console.log("Done");
 });

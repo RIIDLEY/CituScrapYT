@@ -1,9 +1,11 @@
 <?php
 require('view_begin.php');
 include 'Utils/data.php';
-if (isset($_SESSION['token'])){
 ?>
-    <a href="?controller=home&action=home" style="text-decoration: none;">Back</a>
+<script>
+    var element = document.getElementById("com");
+    element.classList.add("active");
+</script>
     <div class="container">
     <h1>Collecteur de commentaires</h1>
     <form class="form-inline" action = "?controller=com&action=recherche_com" method="post">
@@ -37,12 +39,6 @@ if (isset($_SESSION['token'])){
 
     </form>
     </div>
-    <?php
-
-}else{
-    ?>
-    <h2>acces interdit</h2>
 <?php
-}
 require('view_end.php');
 ?>
