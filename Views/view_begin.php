@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="?controller=metadata" id="meta">Collecteur de metadonnées</a>
-            <a class="nav-item nav-link" href="?controller=com&action=com" id="com">Collecteur de commentaires</a>
+            <a class="nav-item nav-link" href="?controller=com" id="com">Collecteur de commentaires</a>
             <a class="nav-item nav-link" href="?controller=captions" id="cap">Collecteur de sous-titres</a>
         </div>
     </div>

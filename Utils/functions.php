@@ -54,7 +54,7 @@ function getLien($listSearchResp){
 
 function getDescription($listVideos){
     foreach ($listVideos['items'] as $detail){
-        if (!empty($detail['snippet']['tags'])){
+        if (!empty($detail['snippet']['description'])){
             return str_replace("\n",' ',remove_emoji($detail['snippet']['description']));
         }
         else{
@@ -102,7 +102,7 @@ function getComm($idVideo,$nbdata,$ordre,$youtube){
     include 'Utils/data.php';
     $toCSV = array(
         $comCSV
-    );
+    );//set le nom des colonnes
     $token = "";
     $i=0;
 
@@ -115,35 +115,35 @@ function getComm($idVideo,$nbdata,$ordre,$youtube){
             'order'=>$ordre
         ];
 
-        if(!empty($token)){
+        if(!empty($token)){//s'il y'a un token pour la page suivante
             $arr2 = array('pageToken' => $token);
-            $queryParams = $queryParams + $arr2;
+            $queryParams = $queryParams + $arr2;//le met dans le tableau de parametre
         }
 
-        $videoCommentThreads = $youtube->commentThreads->listCommentThreads('snippet,replies', $queryParams);
+        $videoCommentThreads = $youtube->commentThreads->listCommentThreads('snippet,replies', $queryParams);//recupere tout les commantaires de la page
 
-        $token = $videoCommentThreads->getNextPageToken();
+        $token = $videoCommentThreads->getNextPageToken();//genere le token pour la page suivante
 
         foreach($videoCommentThreads["items"] as $comm){
             $tmp = array();
             array_push($tmp,$comm['snippet']['topLevelComment']['id']);//id
-            array_push($tmp,$comm['snippet']['totalReplyCount']);//nbrep
+            array_push($tmp,$comm['snippet']['totalReplyCount']);//Nombre de reponse
             array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['likeCount']);//NbLike
-            array_push($tmp,date('Y-m-d', strtotime($comm['snippet']['topLevelComment']['snippet']['publishedAt'])));//date
+            array_push($tmp,date('Y-m-d', strtotime($comm['snippet']['topLevelComment']['snippet']['publishedAt'])));//Date
             array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['authorDisplayName']);//Auteur
             array_push($tmp,$comm['snippet']['topLevelComment']['snippet']['textOriginal']);//Texte
             array_push($toCSV, $tmp);
 
-           if(!empty($comm['replies']['comments'])){
+           if(!empty($comm['replies']['comments'])){//s'il y'a des réponses au commentaire courant
                 for ($j = 0; $j<count($comm['replies']['comments']);$j++){
                     $tmpReplies = array();
                     array_push($tmpReplies,$comm['replies']['comments'][$j]['id']);//id
-                    array_push($tmpReplies,"");//nbrep
+                    array_push($tmpReplies,"");//nbrep = null (on ne peut pas repondre à une reponse)
                     array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['likeCount']);//NbLike
                     array_push($tmpReplies,date('Y-m-d', strtotime($comm['replies']['comments'][$j]['snippet']['publishedAt'])));//date
                     array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['authorDisplayName']);//Auteur
                     array_push($tmpReplies,$comm['replies']['comments'][$j]['snippet']['textOriginal']);//Texte
-                    array_push($tmpReplies,$comm['snippet']['topLevelComment']['id']);//repond a
+                    array_push($tmpReplies,$comm['snippet']['topLevelComment']['id']);//repond a quel commentaire
 
                     array_push($toCSV, $tmpReplies);
                 }
@@ -151,7 +151,7 @@ function getComm($idVideo,$nbdata,$ordre,$youtube){
 
         }
         $i++;
-    }while($i<$nbdata/100);
+    }while($i<$nbdata/100);//boucle tant qu'il n'a pas atteint le nombre souhaité par l'utilisateur
 
     return $toCSV;
 }

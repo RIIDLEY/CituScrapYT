@@ -3,13 +3,14 @@ const ObjectsToCsv = require('objects-to-csv');
 var arguments = process.argv;
 
 var idvideo = arguments[2];
+var lang = arguments[3];
 
 getSubtitles({
     videoID: arguments[2], // youtube video id
     lang: arguments[3] // default: `en`
 }).then(function(captions) {
-    const csv = new ObjectsToCsv(captions);
-    var filename = 'CSV/fileCaptions_' + idvideo + '.csv';
-    csv.toDisk(filename);
-    console.log("Done");
+    const csv = new ObjectsToCsv(captions);//prepare CSV
+    var filename = 'CSV/Captions_' + idvideo + '_' + lang + '.csv';
+    csv.toDisk(filename);//ecris le CSV dans un fichier
+    console.log("Done");//send etat au php
 });

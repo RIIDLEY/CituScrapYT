@@ -9,51 +9,27 @@
     border-radius:10px;
 }
 
-.option{
-    position: relative;
-    background-color: green;
-    border-radius:10px;
-    height:75%;
+.rowTools{
+    margin: 50px;
 }
 
-.divTypeMeta{
-    font-size: 20px;
-    display: inline-block;
-    padding: 100px;
-    background-color: red;
+.rowTools2{
+    margin: 50px;
 }
 
-.divSort{
-    top:0;
-    position: absolute;
-    font-size: 20px;
-    display: inline-block;
-    padding: 100px;
-    background-color: blue;
+.displayNone{
+    display: none;
 }
 
-.divNbData{
-
-    background-color: orange;
+.signature {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    color: #fff;
 }
 
-.loader {
-    border: 16px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 16px solid #000000;
-    width: 120px;
-    height: 120px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
-}
-
-/* Safari */
-@-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.grey{
+    color: grey;
 }
