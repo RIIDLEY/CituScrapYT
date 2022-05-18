@@ -35,13 +35,13 @@ if (isset($tablang) and isset($idVideo) and isset($DataVideo)){
     echo "<hr>";
 
     foreach ($DataVideo['items'] as $detail){//affiche les informations de la vidéo qui vas etre traité
-        echo "<u><h4>Vidéo sélectionné :</h4></u>";
+        echo "<u><h4>Vidéo sélectionnée :</h4></u>";
         echo "<h5>".$detail['snippet']['title']."</h5>";
         echo "<img src='".$detail['snippet']['thumbnails']['medium']['url']."' wigth='100%'>";
     }
     echo "<u><h4>Veuillez sélectionner une langue :</h4></u>";
     foreach ($tablang as $value) {//affiche les langues disponibles
-        echo '<a class="btn btn-primary" href="?controller=captions&action=download&lang='.$value.'&IdVideo='.$idVideo.'">'.$value.'</a><br>';
+        echo '<a class="btn btn-primary" style="margin:1%;" href="?controller=captions&action=download&lang='.$value.'&IdVideo='.$idVideo.'">'.$value.'</a>';
     }
 }
 ?>
