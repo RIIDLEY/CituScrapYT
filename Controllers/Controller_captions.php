@@ -28,18 +28,29 @@ class Controller_captions extends Controller{
            array_push($tmp,$caption_lang['snippet']["language"]);
          }
 
+
          $tmp = array_unique($tmp);//retire les doublons
-         $this->render('captions',["tablang"=>$tmp,"idVideo"=>$_POST['name'],"DataVideo"=>$youtube->videos->listVideos('snippet,contentDetails,statistics',["id"=>$_POST['name']])]);//envoie à la vue avec un tableau d'information
+
+         $tmpExec = 'node Captions.js ' . $_POST['name'] ." ". $tmp[0];
+         $command = escapeshellcmd($tmpExec);//prepare la commande
+         $output = shell_exec($command);//execute la commande
+
+         if($output==403){//Verifie si les sous-titres ne sont pas desactivé
+           echo "<script>alert(\"Les sous-titres sont desactivé sur cette vidéo.\")</script>";
+           $this->render("captions");
+         }else{
+           $this->render('captions',["tablang"=>$tmp,"idVideo"=>$_POST['name'],"DataVideo"=>$youtube->videos->listVideos('snippet,contentDetails,statistics',["id"=>$_POST['name']])]);//envoie à la vue avec un tableau d'information
+         }
 
 
        } catch (Google_Service_Exception $e) {
-         echo "<script>alert('Une erreur est survenu')</script>";
+         echo "<script>alert('Une erreur est survenue au niveau de l\'API Youtube.')</script>";
          $this->render("captions");
        } catch (GuzzleHttp_Exception_RequestException $e) {
-         echo "<script>alert(\"Une erreur de connexion est survenu\")</script>";
+         echo "<script>alert(\"Une erreur de connexion est survenu.\")</script>";
          $this->render("captions");
        } catch (GuzzleHttp_Exception_ConnectException $e) {
-         echo "<script>alert(\"Une erreur de connexion est survenu\")</script>";
+         echo "<script>alert(\"Une erreur de connexion est survenu.\")</script>";
          $this->render("captions");
        }
 
@@ -62,7 +73,7 @@ class Controller_captions extends Controller{
         header('Content-Length: ' . filesize($filename));
         readfile($filename);//envoie le fichier au client
       }else{
-        echo "<script>alert(\"Une erreur est survenu.\")</script>";
+        echo "<script>alert(\"Une erreur est survenue. Vérifiez votre connexion.\")</script>";
         $this->render("captions");
       }
     }else{

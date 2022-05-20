@@ -38,7 +38,11 @@ class Controller_com extends Controller
 
 
       } catch (Google_Service_Exception $e) {
-        echo "<script>alert('Une erreur est survenu')</script>";
+        if($e->getCode()==403){
+          echo "<script>alert('Les commentaires de la vidéo sont desactivé')</script>";
+        }else{
+          echo "<script>alert('Une erreur est survenue au niveau de l\'API Youtube')</script>";
+        }
         $this->render("com");
       } catch (GuzzleHttp_Exception_RequestException $e) {
         echo "<script>alert(\"Une erreur de connexion est survenu\")</script>";
