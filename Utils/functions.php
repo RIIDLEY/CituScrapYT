@@ -66,7 +66,7 @@ function getDescription($listVideos){
 function getTags($listVideos){
     foreach ($listVideos['items'] as $detail){
         if (!empty($detail['snippet']['tags'])){
-            return implode(" ",$detail['snippet']['tags']);
+            return implode(" ",str_replace(" ","_",$detail['snippet']['tags']));
         }else{
             return "";
         }
