@@ -43,10 +43,10 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                 }
 
                 var ele = document.getElementsByName('rendu');
-
+                var typeRendu = "";
                 for(i = 0; i < ele.length; i++) {
                     if(ele[i].checked)
-                        console.log(ele[i].value);
+                        typeRendu = ele[i].value;
                 }
                 var TagArrayNode = [];
 
@@ -93,73 +93,65 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                     }
                 }
 
-                /*
-                            for (let i = 0; i < results.data.length; i++) {//link
-                              graph.edges.push({
-                                id: i,
-                                source: i,
-                                target: results.data.length,
-                                color: '#202020',
-                                type: 'curvedArrow'
-                              })
-                            }*/
-
                 // Load the graph in sigma
                 //console.log(graph.nodes.length);
                 s.graph.read(graph);
                 // Ask sigma to draw it
 
                 s.refresh();
-                /*
-                s.bind('rightClickNode', function(e) {
-                  console.log(e.type, e.data.node.label, e.data.captor);
-                })*/
 
 
-                /*
-                var fa = sigma.layouts.configForceLink(s, {
-                  worker: true,
-                  autoStop: true,
-                  background: true,
-                  scaleRatio: 30,
-                  gravity: 3,
-                  easing: 'cubicInOut'
-                });
+                if (typeRendu==="configForceLink"){
+                    var fa = sigma.layouts.configForceLink(s, {
+                        worker: true,
+                        autoStop: true,
+                        background: true,
+                        scaleRatio: 30,
+                        gravity: 3,
+                        easing: 'cubicInOut'
+                    });
 
-                // Bind the events:
-                fa.bind('start stop', function (e) {
-                  console.log(e.type);
-                  document.getElementById('layout-notification').style.visibility = '';
-                  if (e.type == 'start') {
-                    document.getElementById('layout-notification').style.visibility = 'visible';
-                  }
-                });
+                    // Bind the events:
+                    fa.bind('start stop', function (e) {
+                        console.log(e.type);
+                        if (e.type == 'start') {
+                            document.getElementById('layout-notification').classList.remove("displayNone");
+                            document.getElementById('form').classList.add("displayNone");
+                        }
+                        if (e.type == 'stop') {
+                            document.getElementById('layout-notification').classList.add("displayNone");
+                            document.getElementById('reset').classList.remove("displayNone");
+                        }
+                    });
 
-                // Start the ForceLink algorithm:
-                sigma.layouts.startForceLink();*/
+                    // Start the ForceLink algorithm:
+                    sigma.layouts.startForceLink();
+                }
 
+                if (typeRendu==="fruchtermanReingold"){
+                    var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
+                        iterations: 500,
+                        easing: 'quadraticInOut',
+                        duration: 800
+                    });
 
-                var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
-                    iterations: 500,
-                    easing: 'quadraticInOut',
-                    duration: 800
-                });
+                    // Bind the events:
+                    frListener.bind('start stop interpolate', function (e) {
+                        console.log(e.type);
+                        if (e.type == 'start') {
+                            document.getElementById('layout-notification').classList.remove("displayNone");
+                            document.getElementById('form').classList.add("displayNone");
+                        }
+                        if (e.type == 'stop') {
+                            document.getElementById('layout-notification').classList.add("displayNone");
+                            document.getElementById('reset').classList.remove("displayNone");
+                        }
+                    });
 
-                // Bind the events:
-                frListener.bind('start stop interpolate', function (e) {
-                    console.log(e.type);
-                    if (e.type == 'start') {
-                        document.getElementById('layout-notification').classList.remove("displayNone");
-                        document.getElementById('form').classList.add("displayNone");
-                    }
-                    if (e.type == 'stop') {
-                        document.getElementById('layout-notification').classList.add("displayNone");
-                        document.getElementById('reset').classList.remove("displayNone");
-                    }
-                });
+                    // Start the Fruchterman-Reingold algorithm:
+                    sigma.layouts.fruchtermanReingold.start(s);
+                }
 
-                // Start the Fruchterman-Reingold algorithm:
-                sigma.layouts.fruchtermanReingold.start(s);
             }
         })
 })
