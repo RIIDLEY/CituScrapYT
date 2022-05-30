@@ -1,3 +1,11 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 .grandeDivData{
     color: white;
     text-align: center;
@@ -32,4 +40,17 @@
 
 .grey{
     color: grey;
+}
+
+#sigma-container {
+    width: 90%;
+    height: 500px;
+    margin: 30px auto;
+    box-shadow:0px 2px 10px rgba(0,0,0,0.3);
+    border-radius:10px;
+    background-color: #E1E1E1
+}
+
+#layout-notification {
+    font-weight: bold;
 }

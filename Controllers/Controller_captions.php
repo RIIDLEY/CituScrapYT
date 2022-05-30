@@ -76,6 +76,7 @@ class Controller_captions extends Controller{
         echo "<script>alert(\"Une erreur est survenue. Vérifiez votre connexion.\")</script>";
         $this->render("captions");
       }
+
     }else{
       echo "<script>alert(\"Une erreur est survenu.\")</script>";
       $this->render("captions");

@@ -1,0 +1,57 @@
+<!-- Sigma plugins -->
+<script src="SigmaJS/src/sigma.core.js"></script>
+<script src="SigmaJS/src/conrad.js"></script>
+<script src="SigmaJS/src/utils/sigma.utils.js"></script>
+<script src="SigmaJS/src/utils/sigma.polyfills.js"></script>
+<script src="SigmaJS/src/sigma.settings.js"></script>
+<script src="SigmaJS/src/classes/sigma.classes.dispatcher.js"></script>
+<script src="SigmaJS/src/classes/sigma.classes.configurable.js"></script>
+<script src="SigmaJS/src/classes/sigma.classes.graph.js"></script>
+<script src="SigmaJS/src/classes/sigma.classes.camera.js"></script>
+<script src="SigmaJS/src/classes/sigma.classes.quad.js"></script>
+<script src="SigmaJS/src/captors/sigma.captors.mouse.js"></script>
+<script src="SigmaJS/src/captors/sigma.captors.touch.js"></script>
+<script src="SigmaJS/src/renderers/sigma.renderers.canvas.js"></script>
+<script src="SigmaJS/src/renderers/sigma.renderers.webgl.js"></script>
+<script src="SigmaJS/src/renderers/sigma.renderers.svg.js"></script>
+<script src="SigmaJS/src/renderers/sigma.renderers.def.js"></script>
+<script src="SigmaJS/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="SigmaJS/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="SigmaJS/src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="SigmaJS/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="SigmaJS/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="SigmaJS/src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.edges.curvedArrow.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="SigmaJS/src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="SigmaJS/src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="SigmaJS/src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="SigmaJS/src/misc/sigma.misc.animation.js"></script>
+<script src="SigmaJS/src/misc/sigma.misc.bindEvents.js"></script>
+<script src="SigmaJS/src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="SigmaJS/src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+
+<script src="SigmaJS/plugins/sigma.parsers.gexf/gexf-parser.js"></script>
+<script src="SigmaJS/plugins/sigma.parsers.gexf/sigma.parsers.gexf.js"></script>
+<script src="SigmaJS/plugins/sigma.plugins.animate/sigma.plugins.animate.js"></script>
+<script src="SigmaJS/plugins/sigma.layouts.forceLink/worker.js"></script>
+<script src="SigmaJS/plugins/sigma.layouts.forceLink/supervisor.js"></script>
+<script src="SigmaJS/plugins/sigma.layouts.fruchtermanReingold/sigma.layout.fruchtermanReingold.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
