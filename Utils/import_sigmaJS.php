@@ -49,9 +49,13 @@
 
 <script src="SigmaJS/plugins/sigma.parsers.gexf/gexf-parser.js"></script>
 <script src="SigmaJS/plugins/sigma.parsers.gexf/sigma.parsers.gexf.js"></script>
+<script src="SigmaJS/plugins/sigma.exporters.gexf/sigma.exporters.gexf.js"></script>
 <script src="SigmaJS/plugins/sigma.plugins.animate/sigma.plugins.animate.js"></script>
 <script src="SigmaJS/plugins/sigma.layouts.forceLink/worker.js"></script>
 <script src="SigmaJS/plugins/sigma.layouts.forceLink/supervisor.js"></script>
 <script src="SigmaJS/plugins/sigma.layouts.fruchtermanReingold/sigma.layout.fruchtermanReingold.js"></script>
+<script src="SigmaJS/plugins/sigma.layouts.forceAtlas2/worker.js"></script>
+<script src="SigmaJS/plugins/sigma.layouts.forceAtlas2/supervisor.js"></script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>

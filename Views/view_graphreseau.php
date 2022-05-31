@@ -16,17 +16,22 @@ include 'Utils/import_sigmaJS.php';
         <br>
         <u><h4>Méthode de rendu :</h4></u>
             <input class="form-check-input" type="radio" name="rendu" id="flexRadioDefault1" value="fruchtermanReingold" checked>
-            <label class="form-check-label" for="flexRadioDefault1">Force-based layout</label><br>
+            <label class="form-check-label" for="flexRadioDefault1">Fruchterman Reingold</label><br>
 
             <input class="form-check-input" type="radio" name="rendu" id="flexRadioDefault1" value="configForceLink">
             <label class="form-check-label" for="flexRadioDefault1">Force Link</label>
 
+        <input class="form-check-input" type="radio" name="rendu" id="flexRadioDefault1" value="ForceAtlas2">
+        <label class="form-check-label" for="flexRadioDefault1">Force Atlas 2</label>
+
 
     </div>
     <span id="layout-notification" class="displayNone">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Chargement</span>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only"> Chargement</span>
     </span>
     <span id="reset" class="displayNone">
+            <button id="download" class="btn btn-primary">Télécharger en GEXF</button>
+            <button id="degree" class="btn btn-primary">degree</button>
            <a href="?controller=graphreseau" class="btn btn-primary" role="button">Nouveau graphique</a>
     </span>
 

@@ -1,3 +1,14 @@
+sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+    var k,
+        neighbors = {},
+        index = this.allNeighborsIndex[nodeId] || {};
+
+    for (k in index)
+        neighbors[k] = this.nodesIndex[k];
+
+    return neighbors;
+});
+
 function uniq(a) {
     var seen = {};
     return a.filter(function (item) {
@@ -14,11 +25,8 @@ var s = new sigma(
         settings: {
             scalingMode: 'outside',
             drawLabels: false,
-            enableEdgeHovering: true,
-            edgeHoverColor: 'edge',
-            defaultEdgeHoverColor: '#000',
-            edgeHoverSizeRatio: 1,
-            edgeHoverExtremities: true
+            maxNodeSize: 10,
+            minNodeSize: 2,
         }
     }
 );
@@ -57,7 +65,8 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         x: Math.random(),
                         y: Math.random(),
                         size: 4,
-                        color: '#0080ff'
+                        color: '#0080ff',
+                        originalColor: '#0080ff'
                     })
                     const TagsArrayCourant = results.data[i].Tags.split(' ');
                     TagArrayNode.push.apply(TagArrayNode, TagsArrayCourant);
@@ -72,7 +81,9 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         x: Math.random(),
                         y: Math.random(),
                         size: 2,
-                        color: '#ff0000'
+                        color: '#ff0000',
+                        originalColor: '#ff0000',
+                        inDegree: 0
                     })
                 }
 
@@ -88,18 +99,25 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                             target: parseInt(tmp) + parseInt(results.data.length),
                             color: '#000',
                             type: 'curvedArrow',
-                            hover_color: '#00ff2f'
+                            data: {
+                                properties: {
+                                    aString: 'abc ' + i,
+                                    aBoolean: false,
+                                    anInteger: i,
+                                    aFloat: Math.random(),
+                                    anArray: [1, 2, 3]
+                                }
+                            }
                         })
+                        graph.nodes[parseInt(tmp) + parseInt(results.data.length)].inDegree +=1;
                     }
                 }
 
                 // Load the graph in sigma
-                //console.log(graph.nodes.length);
                 s.graph.read(graph);
+
                 // Ask sigma to draw it
-
                 s.refresh();
-
 
                 if (typeRendu==="configForceLink"){
                     var fa = sigma.layouts.configForceLink(s, {
@@ -145,6 +163,7 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         if (e.type == 'stop') {
                             document.getElementById('layout-notification').classList.add("displayNone");
                             document.getElementById('reset').classList.remove("displayNone");
+
                         }
                     });
 
@@ -152,6 +171,73 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                     sigma.layouts.fruchtermanReingold.start(s);
                 }
 
+                if (typeRendu==="ForceAtlas2"){
+                    document.getElementById('form').classList.add("displayNone");
+                    document.getElementById('reset').classList.remove("displayNone");
+                    s.startForceAtlas2();
+                    window.setTimeout(function() {s.killForceAtlas2()}, 5000);
+                }
+
+                s.bind('clickNode', function(e) {
+                    console.log("Voisin");
+                    var nodeId = e.data.node.id,
+                        toKeep = s.graph.neighbors(nodeId);
+                    toKeep[nodeId] = e.data.node;
+                    console.log(toKeep);
+                    s.graph.nodes().forEach(function(n) {
+                        if (toKeep[n.id])
+                            n.color = '#24ff03';
+                        else
+                            n.color = n.originalColor;
+                    });
+
+                    s.graph.edges().forEach(function(e) {
+                        if (toKeep[e.source] || toKeep[e.target]){
+                            e.color = '#24ff03';
+                        }
+                        else
+                            e.color = e.originalColor;
+                    });
+
+                    //Refresh graph to update colors
+                    s.refresh();
+                });
+
+                s.bind('rightClickStage', function(e) {
+                    s.graph.nodes().forEach(function(n) {
+                            n.color = n.originalColor,
+                            n.hidden = false;
+                    });
+
+                    s.graph.edges().forEach(function(e) {
+                        e.color = '#000',
+                            e.hidden = false;
+                    });
+
+                    //Refresh graph to update colors
+                    s.refresh();
+                });
+
             }
         })
 })
+
+const degree = document.getElementById('degree').addEventListener("click", () => {
+    s.graph.nodes().forEach(function(n) {
+        if (n.inDegree != null){
+            n.size = n.inDegree;
+        }
+    });
+    s.refresh();
+})
+
+const download = document.getElementById('download').addEventListener("click", () => {
+    s.toGEXF({
+        download: true,
+        filename: 'myGraph.gexf',
+        nodeAttributes: 'data',
+        edgeAttributes: 'data.properties',
+        renderer: s.renderers[0]
+    });
+})
+
