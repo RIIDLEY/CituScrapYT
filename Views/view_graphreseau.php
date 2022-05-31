@@ -32,6 +32,7 @@ include 'Utils/import_sigmaJS.php';
     <span id="reset" class="displayNone">
             <button id="download" class="btn btn-primary">Télécharger en GEXF</button>
             <button id="degree" class="btn btn-primary">degree</button>
+            <button id="resetdegree" class="btn btn-primary">resetdegree</button>
            <a href="?controller=graphreseau" class="btn btn-primary" role="button">Nouveau graphique</a>
     </span>
 

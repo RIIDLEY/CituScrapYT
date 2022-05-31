@@ -65,6 +65,7 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         x: Math.random(),
                         y: Math.random(),
                         size: 4,
+                        originSize : 4,
                         color: '#0080ff',
                         originalColor: '#0080ff'
                     })
@@ -81,6 +82,7 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         x: Math.random(),
                         y: Math.random(),
                         size: 2,
+                        originSize : 2,
                         color: '#ff0000',
                         originalColor: '#ff0000',
                         inDegree: 0
@@ -227,6 +229,14 @@ const degree = document.getElementById('degree').addEventListener("click", () =>
         if (n.inDegree != null){
             n.size = n.inDegree;
         }
+    });
+    s.refresh();
+})
+
+
+const resetdegree = document.getElementById('resetdegree').addEventListener("click", () => {
+    s.graph.nodes().forEach(function(n) {
+        n.size = n.originSize;
     });
     s.refresh();
 })
