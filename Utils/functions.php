@@ -44,8 +44,16 @@ function remove_emoji($string)//fonction qui supprime les emojis d'une chaine de
     return $clear_string;
 }
 
+function less_than_fiveteen($word) {
+    return strlen($word) < 15;
+}
+
+function more_than_three($word) {
+    return strlen($word) > 3;
+}
+
 function getTitre($listSearchResp){
-    return $listSearchResp['snippet']['title'];
+    return remove_emoji($listSearchResp['snippet']['title']);
 }
 
 function getLien($listSearchResp){
@@ -66,7 +74,10 @@ function getDescription($listVideos){
 function getTags($listVideos){
     foreach ($listVideos['items'] as $detail){
         if (!empty($detail['snippet']['tags'])){
-            return implode(" ",str_replace(" ","_",$detail['snippet']['tags']));
+            $arrTmp = str_replace(" ","_",$detail['snippet']['tags']);//get les tags
+            $arrTmp = array_filter($arrTmp, "less_than_fiveteen");//supprime les tags de plus de 15 chars
+            $arrTmp = array_filter($arrTmp, "more_than_three");//supprimer les tags de moins de 5 chars
+            return implode(" ",remove_emoji($arrTmp));
         }else{
             return "";
         }

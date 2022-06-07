@@ -1,4 +1,4 @@
-sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+sigma.classes.graph.addMethod('neighbors', function(nodeId) {//ajoute la méthode pour trouver les voisins
     var k,
         neighbors = {},
         index = this.allNeighborsIndex[nodeId] || {};
@@ -9,13 +9,14 @@ sigma.classes.graph.addMethod('neighbors', function(nodeId) {
     return neighbors;
 });
 
-function uniq(a) {
+function uniq(a) {//fonction permettant de supprimer les doublons
     var seen = {};
     return a.filter(function (item) {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
     });
 }
 
+//init le graphique sigma
 var s = new sigma(
     {
         renderer: {
@@ -37,28 +38,36 @@ var graph = {
 }
 
 const uploadconfirm = document.getElementById('uploadconfirm').addEventListener("click", () => {
+
+    let filename = document.getElementById("uploadfile").value;//get le nom du document envoyé
+    let extension = filename.split(".").pop();//prend l'extension
+    if (extension != 'csv'){//verifie l'extension
+        alert("Type de fichier selectionné incorrect");
+        return;
+    }
+    //lis le fichier CSV
     Papa.parse(document.getElementById("uploadfile").files[0],
         {
             download: true,
             header: true,
             skipEmptyLines: true,
             complete: function (results) {
-                var header = results.meta['fields']
+                var header = results.meta['fields'];//Get le titre des colonnes
 
-                if (!header.includes("Titre") || !header.includes("Tags")) {
+                if (!header.includes("Titre") || !header.includes("Tags")) {//verifie si les necessaires existes
                     alert("Une colonne est manquante.");
                     return;
                 }
 
-                var ele = document.getElementsByName('rendu');
+                var ele = document.getElementsByName('rendu');//Get le rendu que veut l'utilisateur
                 var typeRendu = "";
-                for(i = 0; i < ele.length; i++) {
+                for(i = 0; i < ele.length; i++) {//parcours les boutons radio
                     if(ele[i].checked)
                         typeRendu = ele[i].value;
                 }
                 var TagArrayNode = [];
 
-                for (let i = 0; i < results.data.length; i++) {//Node titre
+                for (let i = 0; i < results.data.length; i++) {//Met les nodes titres
                     graph.nodes.push({
                         id: i,
                         label: results.data[i].Titre,
@@ -67,15 +76,18 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                         size: 4,
                         originSize : 4,
                         color: '#0080ff',
-                        originalColor: '#0080ff'
+                        originalColor: '#0080ff',
+                        outDegree : 0
                     })
-                    const TagsArrayCourant = results.data[i].Tags.split(' ');
-                    TagArrayNode.push.apply(TagArrayNode, TagsArrayCourant);
+                    const TagsArrayCourant = results.data[i].Tags.split(' ');//get les tags de la ligne courante
+                    TagArrayNode.push.apply(TagArrayNode, TagsArrayCourant);//push dans le tableau
                 }
 
-                TagArrayNode = uniq(TagArrayNode);
+                TagArrayNode = uniq(TagArrayNode);//supprime les Tags en double
 
-                for (let i = 0; i < TagArrayNode.length; i++) {//Node tags
+                //remove_len_15(TagArrayNode);
+
+                for (let i = 0; i < TagArrayNode.length; i++) {//Met les nodes tags
                     graph.nodes.push({
                         id: i + results.data.length,
                         label: TagArrayNode[i],
@@ -89,13 +101,12 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                     })
                 }
 
-                for (let i = 0; i < results.data.length; i++) {//link
-                    const TagsArrayCourant = results.data[i].Tags.split(' ');
+                for (let i = 0; i < results.data.length; i++) {//réalisation des liaisons entre les titres et les tags
+                    const TagsArrayCourant = results.data[i].Tags.split(' ');//recupere les tags par rapport au titre de la vidéo courante
 
-                    for (let j = 0; j < TagsArrayCourant.length; j++) {
-                        var tmp = Object.keys(TagArrayNode).find(key => TagArrayNode[key] == TagsArrayCourant[j]);
-
-                        graph.edges.push({
+                    for (let j = 0; j < TagsArrayCourant.length; j++) {//parcours les tags
+                        var tmp = Object.keys(TagArrayNode).find(key => TagArrayNode[key] == TagsArrayCourant[j]);//get l'id node du tags
+                        graph.edges.push({//fait la liaison
                             id: graph.edges.length + 1,
                             source: i,
                             target: parseInt(tmp) + parseInt(results.data.length),
@@ -111,14 +122,15 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                                 }
                             }
                         })
-                        graph.nodes[parseInt(tmp) + parseInt(results.data.length)].inDegree +=1;
+                        graph.nodes[parseInt(tmp) + parseInt(results.data.length)].inDegree +=1;//+1 au nombre de degré entant dans le node tags
+                        graph.nodes[i].outDegree += 1;//+1 au nombre de degré sortant du node titre
                     }
                 }
 
-                // Load the graph in sigma
+                // Charge le tableau de node et de link dans sigma
                 s.graph.read(graph);
 
-                // Ask sigma to draw it
+                // Dessine le graph
                 s.refresh();
 
                 if (typeRendu==="configForceLink"){
@@ -135,18 +147,22 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                     fa.bind('start stop', function (e) {
                         console.log(e.type);
                         if (e.type == 'start') {
-                            document.getElementById('layout-notification').classList.remove("displayNone");
-                            document.getElementById('form').classList.add("displayNone");
+                            document.getElementById('layout-notification').classList.remove("displayNone");//Met l'animation de chargement
+                            document.getElementById('form').classList.add("displayNone");//Cache le formulaire d'envoie du fichier CSV
                         }
                         if (e.type == 'stop') {
-                            document.getElementById('layout-notification').classList.add("displayNone");
-                            document.getElementById('reset').classList.remove("displayNone");
+                            document.getElementById('layout-notification').classList.add("displayNone");//retirer l'animation de chargement
+                            document.getElementById('reset').classList.remove("displayNone");//Affiche la barre d'outils 1
+                            document.getElementById('tools').classList.remove("displayNone");//Affiche la barre d'outils 2
+                            s.refresh();
                         }
                     });
 
                     // Start the ForceLink algorithm:
                     sigma.layouts.startForceLink();
                 }
+
+                //Selection du type de rendu
 
                 if (typeRendu==="fruchtermanReingold"){
                     var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
@@ -159,13 +175,14 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                     frListener.bind('start stop interpolate', function (e) {
                         console.log(e.type);
                         if (e.type == 'start') {
-                            document.getElementById('layout-notification').classList.remove("displayNone");
-                            document.getElementById('form').classList.add("displayNone");
+                            document.getElementById('layout-notification').classList.remove("displayNone");//Met l'animation de chargement
+                            document.getElementById('form').classList.add("displayNone");//Cache le formulaire d'envoie du fichier CSV
                         }
                         if (e.type == 'stop') {
-                            document.getElementById('layout-notification').classList.add("displayNone");
-                            document.getElementById('reset').classList.remove("displayNone");
-
+                            document.getElementById('layout-notification').classList.add("displayNone");//retirer l'animation de chargement
+                            document.getElementById('reset').classList.remove("displayNone");//Affiche la barre d'outils 1
+                            document.getElementById('tools').classList.remove("displayNone");//Affiche la barre d'outils 2
+                            s.refresh();
                         }
                     });
 
@@ -174,14 +191,16 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
                 }
 
                 if (typeRendu==="ForceAtlas2"){
-                    document.getElementById('form').classList.add("displayNone");
-                    document.getElementById('reset').classList.remove("displayNone");
+                    document.getElementById('form').classList.add("displayNone");//Cache le formulaire d'envoie du fichier CSV
+                    document.getElementById('reset').classList.remove("displayNone");//Affiche la barre d'outils 1
+                    document.getElementById('tools').classList.remove("displayNone");//Affiche la barre d'outils 2
                     s.startForceAtlas2();
                     window.setTimeout(function() {s.killForceAtlas2()}, 5000);
                 }
 
                 s.bind('clickNode', function(e) {
                     console.log("Voisin");
+                    console.log(e.data.node.outDegree);
                     var nodeId = e.data.node.id,
                         toKeep = s.graph.neighbors(nodeId);
                     toKeep[nodeId] = e.data.node;
@@ -224,7 +243,12 @@ const uploadconfirm = document.getElementById('uploadconfirm').addEventListener(
         })
 })
 
-const degree = document.getElementById('degree').addEventListener("click", () => {
+const degreeEntrant = document.getElementById('degreeEntrant').addEventListener("click", () => {
+    s.graph.nodes().forEach(function(n) {
+        n.size = n.originSize;
+    });
+    s.refresh();
+
     s.graph.nodes().forEach(function(n) {
         if (n.inDegree != null){
             n.size = n.inDegree;
@@ -233,6 +257,19 @@ const degree = document.getElementById('degree').addEventListener("click", () =>
     s.refresh();
 })
 
+const degreeSortant = document.getElementById('degreeSortant').addEventListener("click", () => {
+    s.graph.nodes().forEach(function(n) {
+        n.size = n.originSize;
+    });
+    s.refresh();
+
+    s.graph.nodes().forEach(function(n) {
+        if (n.outDegree != null){
+            n.size = n.outDegree;
+        }
+    });
+    s.refresh();
+})
 
 const resetdegree = document.getElementById('resetdegree').addEventListener("click", () => {
     s.graph.nodes().forEach(function(n) {
@@ -249,5 +286,16 @@ const download = document.getElementById('download').addEventListener("click", (
         edgeAttributes: 'data.properties',
         renderer: s.renderers[0]
     });
+})
+
+const textEtat = document.getElementById('textEtat').addEventListener("click", () => {
+    if(s.settings('drawLabels')){
+        s.settings('drawLabels', false);
+    }else {
+        s.settings('drawLabels', true);
+    }
+    s.refresh();
+
+
 })
 
