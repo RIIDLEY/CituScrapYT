@@ -6,14 +6,15 @@ L'objectif de ce projet est de réaliser une boite à outil permettant de faire 
 ## Technologies utilisés
 
 * PHP
-* JS/nodeJS
-* Boostrap
-* Youtube DATA API
-* SigmaJS/Linkurious  
+* NodeJS
+* [Boostrap](https://getbootstrap.com/)
+* [Youtube DATA API](https://developers.google.com/youtube/v3)
+* [SigmaJS](https://www.sigmajs.org/)/[Linkurious](https://github.com/Linkurious/linkurious.js/tree/develop)  
 
 ## Comment l'installer
 
-Mettez le dossier contenant le site dans votre dossier qui permet de le lancer avec Apache.  
+Mettez le dossier contenant le site dans votre dossier qui permet de le lancer avec Apache.
+Si vous hebergez cet outil sur une machine sous MacOS. Utilisez le logiciel MAMP pour l'heberger. Modifiez le fichier Controllers/Controller_captions.php. Des instructions sont disponible à la ligne 66 de ce fichier.
 Allez sur votre navigateur Web, puis à l'adresse localhost/CituScrapYT-master pour avoir accès au systeme que j'ai réalisé.  
 
 ## Collecteur de métadonnées
