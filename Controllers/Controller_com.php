@@ -23,7 +23,7 @@ class Controller_com extends Controller
         $client = new Google_Client();
         $client->setDeveloperKey($keyAPI);//set la clée API
 
-        $youtube = new Google_Service_Youtube($client);//genere un objet api google
+        $youtube = new Google_Service_YouTube($client);//genere un objet api google
 
         $filename = 'CSV/Comm_'.$_POST['name'].'.csv';//prepare le fichier
 

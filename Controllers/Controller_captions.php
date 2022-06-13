@@ -20,7 +20,7 @@ class Controller_captions extends Controller{
          $client = new Google_Client();
          $client->setDeveloperKey($keyAPI);//set la clée API
 
-         $youtube = new Google_Service_Youtube($client);//genere un objet api google
+         $youtube = new Google_Service_YouTube($client);//genere un objet api google
          $tmp = array();
          $response = $youtube->captions->listCaptions('snippet', $_POST['name']);//recupere la liste des sous titres disponible
 

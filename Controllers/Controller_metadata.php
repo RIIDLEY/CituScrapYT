@@ -14,7 +14,7 @@ class Controller_metadata extends Controller{
         include 'Utils/credentials.php';
         $client = new Google_Client();
         $client->setDeveloperKey($keyAPI);
-        $youtube = new Google_Service_Youtube($client);
+        $youtube = new Google_Service_YouTube($client);
 
         $filename = 'CSV/MetaData_'.str_replace(" ","_",$_POST['name']).'.csv';//prepare le fichier
         $toCSV = array(
