@@ -63,9 +63,18 @@ class Controller_captions extends Controller{
 
   public function action_download(){
     if (isset($_GET['lang']) and isset($_GET['IdVideo'])){
+
+      #Commentez/Decommentez en fonction de vos besoins
+
+      #Version Windows/Linux
       $tmp = 'node Captions.js ' . $_GET['IdVideo'] ." ". $_GET['lang'];
       $command = escapeshellcmd($tmp);//prepare la commande
       $output = shell_exec($command);//execute la commande
+
+      #Version MacOS
+      #$tmp = "(/usr/local/bin/node Captions.js " . $_GET['IdVideo'] ." ". $_GET['lang'].") 2>&1";
+      #$output = shell_exec($tmp);//execute la commande
+
 
       if (trim($output)=="Done"){//si success
         $filename = 'CSV/Captions_'.$_GET['IdVideo'].'_'.$_GET['lang'].'.csv';
