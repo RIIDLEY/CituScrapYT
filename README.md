@@ -11,28 +11,34 @@ L'objectif de ce projet est de réaliser une boite à outil permettant de faire 
 * [Youtube DATA API](https://developers.google.com/youtube/v3)
 * [SigmaJS](https://www.sigmajs.org/)/[Linkurious](https://github.com/Linkurious/linkurious.js/tree/develop)  
 
-## Comment l'installer
+## Installation
 
-Mettez le dossier contenant le site dans votre dossier qui permet de le lancer avec Apache.
-Si vous hebergez cet outil sur une machine sous MacOS. Utilisez le logiciel MAMP pour l'heberger. Modifiez le fichier Controllers/Controller_captions.php. Des instructions sont disponible à la ligne 66 de ce fichier.
-Allez sur votre navigateur Web, puis à l'adresse localhost/CituScrapYT-master pour avoir accès au systeme que j'ai réalisé.  
+Déposez le répertoire contenant le site dans votre dossier qui permet de le lancer avec Apache.
+Voici quelques consignes en fonction du système d'exploitation où sera hébergé la boîte à outils:  
+
+MacOS:  
+Utilisez le logiciel MAMP. Modifiez le fichier Controllers/Controller_captions.php. Des instructions sont disponible à la ligne 66 de ce fichier. 
+
+Linux:  
+Modifiez les permissions du dossier /CSV afin que Apache puisse écrire dedans.
+
+Windows:  
+Il est recommandé d'utiliser le logiciel Xampp.
+
+Vous pouvez maintenant utiliser la boite à outil CituScrapYT.  
 
 ## Collecteur de métadonnées
 
-Un système de pagination a été installé afin de naviguer entre les images présentes sur le serveur. Ce système permet d'affiche 4 images par page.
+Cet outil permet de récupérer une sélection de métadonnées disponibles sur des vidéos YouTube. Pour cela, l'utilisateur doit effectuer une recherche avec des mots-clés ainsi que sélectionner les métadonnées à collecter ainsi que la méthode de trie des vidéos à traiter. Ces métadonnées sont ensuite enregistrées dans un fichier CSV puis envoyé à l'utilisateur courant.
 
 ## Collecteur de commentaires
 
-Un utilisateur a la possibilité de téléverser une image. Cette image sera ensuite téléversée vers le dossier de stockage du serveur et référencée sur la base de données.
-Une image ne peut pas être téléversé plus d'une fois.
+Cet outil permet de collecter les commentaires (et les réponses des commentaires) ainsi que les métadonnées qui y sont liées d'une vidéo YouTube.
 
 ## Collecteur de sous-titres
 
-Un bouton "Scan" est présent sur le site web. Il permet de lire l’ensemble des images dans le dossier et sous dossiers possibles.
-Ces images sont ensuite téléversées vers le dossier de stockage du serveur et référencées sur la base de données.
+Cet outil permet de récupérer les sous-titres sous plusieurs langues (en fonction des disponibilités) d'une vidéo YouTubes. 
 
 ## Visualisation : Graphique en réseau
 
-Un système d'administration a été ajouté. 
-Un membre de l'administration peut se créer un compte. Le mot de passé est hashé et les informations sont envoyé à la base de données.
-Par la suite il peut se connecter et supprimer des images.
+Un outil de visualisation est directement disponible dans la boîte à outil. Celui ci permet de de visualiser les differentes liaisons entre des vidéos YouTube et leurs tags sous le format d'un graphique en réseau.
