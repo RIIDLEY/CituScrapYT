@@ -14,6 +14,7 @@ L'objectif de ce projet est de réaliser une boite à outil permettant de faire 
 ## Installation
 
 Déposez le répertoire contenant le site dans votre dossier qui permet de le lancer avec Apache.
+Mettez une clé API YouTube DATA API dans le fichier Utils/credentials.php
 Voici quelques consignes en fonction du système d'exploitation où sera hébergé la boîte à outils:  
 
 MacOS:  
